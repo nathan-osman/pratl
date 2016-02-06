@@ -11,9 +11,9 @@ import (
 // uses a salt and computationally-expensive hashing algorithm.
 type User struct {
 	Id       int64  `orm:"auto"`
-	Username string `orm:"size(32);index;unique"`
+	Email    string `orm:"size(128);index;unique"`
+	Name     string `orm:"size(128)"`
 	Password string `orm:"size(128)"`
-	Email    string `orm:"size(128)"`
 }
 
 func init() {
@@ -21,10 +21,10 @@ func init() {
 }
 
 // NewUser creates a new user and updates the database.
-func NewUser(username, password, email string) (u *User, err error) {
+func NewUser(email, name, password string) (u *User, err error) {
 	u = &User{
-		Username: username,
-		Email:    email,
+		Email: email,
+		Name:  name,
 	}
 	if err = u.SetPassword(password); err != nil {
 		return
@@ -33,10 +33,10 @@ func NewUser(username, password, email string) (u *User, err error) {
 	return
 }
 
-// FindUser attempts to retrieve a user by their name.
-func FindUser(username string) (u *User, err error) {
+// FindUser attempts to retrieve a user by their email address.
+func FindUser(email string) (u *User, err error) {
 	o := orm.NewOrm()
-	u = &User{Username: username}
+	u = &User{Email: email}
 	err = o.Read(u)
 	return
 }
