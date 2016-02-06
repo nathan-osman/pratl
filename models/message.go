@@ -18,3 +18,15 @@ type Message struct {
 func init() {
 	orm.RegisterModel(new(Message))
 }
+
+// NewMessage creates a new message.
+func NewMessage(body string, author *User, channel *Channel) (m *Message, err error) {
+	m = &Message{
+		Body:    body,
+		Time:    time.Now(),
+		Author:  author,
+		Channel: channel,
+	}
+	_, err = orm.NewOrm().Insert(m)
+	return
+}
