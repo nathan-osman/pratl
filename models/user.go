@@ -11,23 +11,9 @@ import (
 // uses a salt and computationally-expensive hashing algorithm.
 type User struct {
 	Id       int64  `orm:"auto"`
-	Username string `orm:"size(32)"`
+	Username string `orm:"size(32);index;unique"`
 	Password string `orm:"size(128)"`
 	Email    string `orm:"size(128)"`
-}
-
-// Create an index for the username field.
-func (u *User) TableIndex() [][]string {
-	return [][]string{
-		[]string{"Username"},
-	}
-}
-
-// Create a unique constraint for the username field.
-func (u *User) TableUnique() [][]string {
-	return [][]string{
-		[]string{"Username"},
-	}
 }
 
 func init() {
