@@ -37,7 +37,7 @@ func NewUser(email, name, password string) (u *User, err error) {
 func FindUser(email string) (u *User, err error) {
 	o := orm.NewOrm()
 	u = &User{Email: email}
-	err = o.Read(u)
+	err = o.Read(u, "Email")
 	return
 }
 
