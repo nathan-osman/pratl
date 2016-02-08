@@ -1,70 +1,57 @@
-<div id="page-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h1>Welcome to Pratl</h1>
-                <hr>
-                {{if .Error}}
-                    <div class="alert alert-danger">
-                        {{.Error}}
-                    </div>
-                {{end}}
-                <div class="row">
-                    <div class="col-md-5">
-                        <h4>Log In</h4>
-                        <p class="text-muted">
-                            Already a registered user?
-                        </p>
-                        <form method="post">
-                            <input type="hidden" name="Action" value="login">
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="Email" value="{{.LoginForm.Email}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="Password" value="{{.LoginForm.Password}}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                Log In
-                            </button>
-                        </form>
-                        <br><br>
-                    </div>
-                    <div class="col-md-5 col-md-offset-1">
-                        <h4>Register</h4>
-                        <p class="text-muted">
-                            Don't have an account?
-                        </p>
-                        <form method="post">
-                            <input type="hidden" name="Action" value="register">
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="Email" value="{{.RegisterForm.Email}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input class="form-control" id="name" name="Name" value="{{.RegisterForm.Name}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="Password" value="{{.RegisterForm.Password}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="password2">Confirm Password</label>
-                                <input type="password" class="form-control" id="password2" name="Password2" value="{{.RegisterForm.Password2}}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                Register
-                            </button>
-                        </form>
-                    </div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Pratl - Chat Made Simple</title>
+
+        <link rel="icon" href="/static/img/favicon.png">
+        <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+        <!-- Page content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <img src="/static/img/window.svg">
                 </div>
-                <hr>
-                <p class="text-muted">
-                    Copyright 2016 - Nathan Osman
-                </p>
+                <div class="col-md-4">
+                    <h1>
+                        Pratl
+                    </h1>
+                    <p class="text-muted">
+                        Chat Made Simple
+                    </p>
+                    <hr>
+                    <ul>
+                        <li>Conversations organized into channels</li>
+                        <li>Distraction-free interface</li>
+                        <li>Responsive design</li>
+                        <li>Incredibly easy to deploy</li>
+                        <li>Scales to hundreds of users</li>
+                        <li>Completely free and open-source</li>
+                    </ul>
+                    <hr>
+                    <a href="/login" class="btn btn-default btn-lg">
+                        Login
+                    </a>
+                    <a href="/register" class="btn btn-default btn-lg">
+                        Register
+                    </a>
+                </div>
             </div>
+            <br><br>
+            <p class="text-center small text-muted">
+                Copyright 2016 &mdash; Nathan Osman
+            </p>
         </div>
-    </div>
-</div>
+
+        <!-- Scripts -->
+        <script src="/static/js/jquery.min.js"></script>
+    </body>
+</html>
