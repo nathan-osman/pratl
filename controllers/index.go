@@ -12,4 +12,5 @@ type IndexController struct {
 // Get displays the home page, which provides a form for logging in.
 func (c *IndexController) Get() {
 	c.TplName = "index.tpl"
+	c.Render()
 }

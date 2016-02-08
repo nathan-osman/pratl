@@ -27,6 +27,7 @@ func init() {
 }
 
 func main() {
+	beego.BConfig.WebConfig.AutoRender = false
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.Run()
 }
