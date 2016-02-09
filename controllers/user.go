@@ -50,6 +50,12 @@ func (c *UserController) Login() {
 	c.Render()
 }
 
+// Logout destroys a user's session and returns them to the home page.
+func (c *UserController) Logout() {
+	c.DelSession("user_id")
+	c.Redirect(c.URLFor("IndexController.Get"), 302)
+}
+
 // RegisterForm provides a form for account signup.
 type RegisterForm struct {
 	Email     string `valid:"Email;MaxSize(128)"`

@@ -31,6 +31,7 @@ func init() {
 	beego.Router("/channels/new", &controllers.ChatController{}, "get,post:New")
 	beego.Router("/channels/:id:int/.*", &controllers.ChatController{}, "get:View")
 	beego.Router("/users/login", &controllers.UserController{}, "get,post:Login")
+	beego.Router("/users/logout", &controllers.UserController{}, "get,post:Logout")
 	beego.Router("/users/register", &controllers.UserController{}, "get,post:Register")
 
 	beego.InsertFilter("/*", beego.BeforeRouter, FilterUser)
