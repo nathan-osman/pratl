@@ -31,7 +31,7 @@ func (c *UserController) Login() {
 				if err == nil {
 					if err := u.Authenticate(f.Password); err == nil {
 						c.SetSession("user_id", u.Id)
-						c.Redirect("/channels", 302)
+						c.Redirect(c.URLFor("ChatController.Index"), 302)
 						return
 					} else {
 						c.Data["Error"] = "Invalid password"
@@ -70,7 +70,7 @@ func (c *UserController) Register() {
 					u, err := models.NewUser(f.Email, f.Name, f.Password)
 					if err != nil {
 						c.SetSession("user_id", u.Id)
-						c.Redirect("/channels", 302)
+						c.Redirect(c.URLFor("ChatController.Index"), 302)
 					} else {
 						c.Data["Error"] = "Unable to complete registration"
 					}

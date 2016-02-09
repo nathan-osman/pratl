@@ -16,6 +16,6 @@ func (c *IndexController) Get() {
 		c.TplName = "index.tpl"
 		c.Render()
 	} else {
-		c.Redirect("/channels", 302)
+		c.Redirect(c.URLFor("ChatController.Index"), 302)
 	}
 }
