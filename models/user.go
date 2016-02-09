@@ -33,6 +33,14 @@ func NewUser(email, name, password string) (u *User, err error) {
 	return
 }
 
+// GetUser retrieves the user for the specified ID.
+func GetUser(id int64) (u *User, err error) {
+	o := orm.NewOrm()
+	u = &User{Id: id}
+	err = o.Read(u)
+	return
+}
+
 // FindUser attempts to retrieve a user by their email address.
 func FindUser(email string) (u *User, err error) {
 	o := orm.NewOrm()
