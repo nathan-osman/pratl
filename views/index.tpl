@@ -28,10 +28,10 @@
                     <li>Completely free and open-source</li>
                 </ul>
                 <hr>
-                <a href="/login" class="btn btn-default btn-lg">
+                <a href="{{ urlfor "UserController.Login" }}" class="btn btn-default btn-lg">
                     Login
                 </a>
-                <a href="/register" class="btn btn-default btn-lg">
+                <a href="{{ urlfor "UserController.Register" }}" class="btn btn-default btn-lg">
                     Register
                 </a>
             </div>

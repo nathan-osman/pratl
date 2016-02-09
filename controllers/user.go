@@ -46,9 +46,8 @@ func (c *UserController) Login() {
 			c.Data["Error"] = "Unable to parse form"
 		}
 	}
-	c.Layout = "base.tpl"
 	c.TplName = "login.tpl"
-	c.Data["Form"] = f
+	c.Render()
 }
 
 // RegisterForm provides a form for account signup.
@@ -85,7 +84,6 @@ func (c *UserController) Register() {
 			c.Data["Error"] = "Unable to parse form"
 		}
 	}
-	c.Layout = "base.tpl"
 	c.TplName = "register.tpl"
-	c.Data["Form"] = f
+	c.Render()
 }
