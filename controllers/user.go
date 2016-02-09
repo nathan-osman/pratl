@@ -78,7 +78,7 @@ func (c *UserController) Register() {
 			if b && err == nil {
 				if f.Password == f.Password2 {
 					u, err := models.NewUser(f.Email, f.Name, f.Password)
-					if err != nil {
+					if err == nil {
 						c.SetSession("user_id", u.Id)
 						c.Redirect(c.URLFor("ChatController.Index"), 302)
 					} else {
