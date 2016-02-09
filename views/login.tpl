@@ -20,17 +20,13 @@
                     </div>
                 {{ end }}
                 <form method="post">
-                    <br>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="Email" value="{{ .Form.Email }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="Password" value="{{ .Form.Password }}">
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-default btn-lg">
+                    <p>
+                        <input type="email" class="form-control" name="Email" value="{{ .Form.Email }}" placeholder="Email">
+                    </p>
+                    <p>
+                        <input type="password" class="form-control" name="Password" value="{{ .Form.Password }}" placeholder="Password">
+                    </p>
+                    <button type="submit" class="btn btn-default">
                         Login
                     </button>
                 </form>
