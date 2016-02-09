@@ -46,7 +46,7 @@ func (c *UserController) Login() {
 			c.Data["Error"] = "Unable to parse form"
 		}
 	}
-	c.TplName = "login.tpl"
+	c.TplName = "user/login.tpl"
 	c.Render()
 }
 
@@ -84,6 +84,6 @@ func (c *UserController) Register() {
 			c.Data["Error"] = "Unable to parse form"
 		}
 	}
-	c.TplName = "register.tpl"
+	c.TplName = "user/register.tpl"
 	c.Render()
 }
