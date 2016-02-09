@@ -6,6 +6,9 @@ import (
 
 	"github.com/nathan-osman/pratl/controllers"
 	"github.com/nathan-osman/pratl/models"
+
+	"fmt"
+	"net/url"
 )
 
 // FilterUser determines if the user is logged in.
@@ -21,7 +24,11 @@ func FilterUser(ctx *context.Context) {
 // logged in.
 func FilterAuth(ctx *context.Context) {
 	if ctx.Input.GetData("user") == nil {
-		ctx.Redirect(302, beego.URLFor("UserController.Login"))
+		ctx.Redirect(302, fmt.Sprintf(
+			"%s?redirect=%s",
+			beego.URLFor("UserController.Login"),
+			url.QueryEscape(ctx.Request.URL.Path),
+		))
 	}
 }
 

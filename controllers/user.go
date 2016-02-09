@@ -31,7 +31,11 @@ func (c *UserController) Login() {
 				if err == nil {
 					if err := u.Authenticate(f.Password); err == nil {
 						c.SetSession("user_id", u.Id)
-						c.Redirect(c.URLFor("ChatController.Index"), 302)
+						r := c.GetString("redirect")
+						if r == "" {
+							r = c.URLFor("ChatController.Index")
+						}
+						c.Redirect(r, 302)
 						return
 					} else {
 						c.Data["Error"] = "Invalid password"
