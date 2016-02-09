@@ -52,8 +52,8 @@ func (c *UserController) Login() {
 
 // RegisterForm provides a form for account signup.
 type RegisterForm struct {
-	Email     string `valid:"Email"`
-	Name      string `valid:"Required"`
+	Email     string `valid:"Email;MaxSize(128)"`
+	Name      string `valid:"Required;MaxSize(128)"`
 	Password  string `valid:"Required"`
 	Password2 string `valid:"Required"`
 }
