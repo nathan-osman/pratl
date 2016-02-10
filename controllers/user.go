@@ -81,6 +81,7 @@ func (c *UserController) Register() {
 					if err == nil {
 						c.SetSession("user_id", u.Id)
 						c.Redirect(c.URLFor("ChatController.Index"), 302)
+						return
 					} else {
 						c.Data["Error"] = "Unable to complete registration"
 					}
