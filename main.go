@@ -68,6 +68,11 @@ func main() {
 		}
 		defer d.Close()
 
+		// Run migrations
+		if err := d.Migrate(); err != nil {
+			return err
+		}
+
 		// Start the server
 		s, err := server.New(&server.Config{
 			Addr: ctx.String("server-addr"),

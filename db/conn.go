@@ -3,6 +3,8 @@ package db
 import (
 	"fmt"
 
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -10,6 +12,7 @@ import (
 // Conn maintains a connection to the database.
 type Conn struct {
 	*gorm.DB
+	logger zerolog.Logger
 }
 
 // New attempts to connect to the database.
@@ -29,11 +32,15 @@ func New(cfg *Config) (*Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Conn{DB: d}, nil
+	return &Conn{
+		DB:     d,
+		logger: log.With().Str("package", "db").Logger(),
+	}, nil
 }
 
 // Migrate applies all pending database migrations.
 func (c *Conn) Migrate() error {
+	c.logger.Info().Msg("applying migrations...")
 	return c.AutoMigrate(
 		&User{},
 		&Room{},

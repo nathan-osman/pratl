@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/nathan-osman/go-herald"
 	"github.com/nathan-osman/pratl/db"
 )
 
@@ -12,6 +13,7 @@ import (
 type Server struct {
 	listener net.Listener
 	conn     *db.Conn
+	herald   *herald.Herald
 	stopped  chan bool
 }
 
@@ -25,6 +27,7 @@ func New(cfg *Config) (*Server, error) {
 		s = &Server{
 			listener: l,
 			conn:     cfg.Conn,
+			herald:   herald.New(),
 			stopped:  make(chan bool),
 		}
 		router = mux.NewRouter()
@@ -32,6 +35,7 @@ func New(cfg *Config) (*Server, error) {
 			Handler: router,
 		}
 	)
+	// TODO: initialize the herald
 	go func() {
 		defer close(s.stopped)
 		if err := server.Serve(l); err != http.ErrServerClosed {
