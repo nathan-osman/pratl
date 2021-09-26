@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/nathan-osman/pratl/db"
+	"github.com/nathan-osman/pratl/server"
 	"github.com/urfave/cli"
 )
 
@@ -66,6 +67,16 @@ func main() {
 			return err
 		}
 		defer d.Close()
+
+		// Start the server
+		s, err := server.New(&server.Config{
+			Addr: ctx.String("server-addr"),
+			Conn: d,
+		})
+		if err != nil {
+			return err
+		}
+		defer s.Close()
 
 		// Wait for SIGINT or SIGTERM
 		sigChan := make(chan os.Signal, 1)
