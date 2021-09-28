@@ -1,52 +1,52 @@
 package server
 
 import (
-	"net"
+	"context"
+	"errors"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/go-herald"
 	"github.com/nathan-osman/pratl/db"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // Server provides an HTTP interface for connecting clients.
 type Server struct {
-	listener net.Listener
-	conn     *db.Conn
-	herald   *herald.Herald
-	stopped  chan bool
+	server http.Server
+	conn   *db.Conn
+	herald *herald.Herald
+	logger zerolog.Logger
 }
 
 // New creates a new server instance.
-func New(cfg *Config) (*Server, error) {
-	l, err := net.Listen("tcp", cfg.Addr)
-	if err != nil {
-		return nil, err
-	}
+func New(cfg *Config) *Server {
 	var (
-		s = &Server{
-			listener: l,
-			conn:     cfg.Conn,
-			herald:   herald.New(),
-			stopped:  make(chan bool),
-		}
-		router = mux.NewRouter()
-		server = http.Server{
-			Handler: router,
+		router = gin.Default()
+		s      = &Server{
+			server: http.Server{
+				Addr:    cfg.Addr,
+				Handler: router,
+			},
+			conn:   cfg.Conn,
+			herald: herald.New(),
+			logger: log.With().Str("package", "server").Logger(),
 		}
 	)
-	// TODO: initialize the herald
+	s.herald.MessageHandler = s.processMessage
+	s.herald.Start()
 	go func() {
-		defer close(s.stopped)
-		if err := server.Serve(l); err != http.ErrServerClosed {
-			// TODO: display error
+		defer s.logger.Info().Msg("server stopped")
+		s.logger.Info().Msg("server started")
+		if err := s.server.ListenAndServe(); errors.Is(err, http.ErrServerClosed) {
+			s.logger.Error().Msg(err.Error())
 		}
 	}()
-	return s, err
+	return s
 }
 
 // Close shuts down the server.
 func (s *Server) Close() {
-	s.listener.Close()
-	<-s.stopped
+	s.server.Shutdown(context.Background())
 }

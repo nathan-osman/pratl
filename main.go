@@ -74,13 +74,10 @@ func main() {
 		}
 
 		// Start the server
-		s, err := server.New(&server.Config{
+		s := server.New(&server.Config{
 			Addr: ctx.String("server-addr"),
 			Conn: d,
 		})
-		if err != nil {
-			return err
-		}
 		defer s.Close()
 
 		// Wait for SIGINT or SIGTERM
