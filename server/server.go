@@ -23,19 +23,31 @@ type Server struct {
 // New creates a new server instance.
 func New(cfg *Config) *Server {
 	var (
-		router = gin.Default()
-		s      = &Server{
+		r = gin.Default()
+		s = &Server{
 			server: http.Server{
 				Addr:    cfg.Addr,
-				Handler: router,
+				Handler: r,
 			},
 			conn:   cfg.Conn,
 			herald: herald.New(),
 			logger: log.With().Str("package", "server").Logger(),
 		}
 	)
+
+	// Register the API routes
+	r.GET("/rooms", s.rooms_GET)
+	r.POST("/rooms", s.rooms_POST)
+	r.PUT("/rooms/:id", s.rooms_id_PUT)
+	r.DELETE("/rooms/:id", s.rooms_id_DELETE)
+
+	// Setup and initialize the herald
 	s.herald.MessageHandler = s.processMessage
+	s.herald.ClientAddedHandler = s.processClientAdded
+	s.herald.ClientRemovedHandler = s.processClientRemoved
 	s.herald.Start()
+
+	// Start the goroutine that listens for incoming connections
 	go func() {
 		defer s.logger.Info().Msg("server stopped")
 		s.logger.Info().Msg("server started")
@@ -43,10 +55,12 @@ func New(cfg *Config) *Server {
 			s.logger.Error().Msg(err.Error())
 		}
 	}()
+
 	return s
 }
 
-// Close shuts down the server.
+// Close shuts down the server and herald.
 func (s *Server) Close() {
 	s.server.Shutdown(context.Background())
+	s.herald.Close()
 }
