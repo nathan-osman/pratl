@@ -36,10 +36,16 @@ func New(cfg *Config) *Server {
 	)
 
 	// Register the API routes
+
+	r.POST("/users/login", s.users_login_POST)
+	r.POST("/users/register", s.users_register_POST)
+
 	r.GET("/rooms", s.rooms_GET)
 	r.POST("/rooms", s.rooms_POST)
 	r.PUT("/rooms/:id", s.rooms_id_PUT)
 	r.DELETE("/rooms/:id", s.rooms_id_DELETE)
+
+	r.POST("/messages", s.messages_POST)
 
 	// Setup and initialize the herald
 	s.herald.MessageHandler = s.processMessage
