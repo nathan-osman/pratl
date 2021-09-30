@@ -3,6 +3,7 @@ module github.com/nathan-osman/pratl
 go 1.16
 
 require (
+	github.com/appleboy/gin-jwt/v2 v2.6.4
 	github.com/gin-gonic/gin v1.7.4
 	github.com/nathan-osman/go-herald v0.0.0-20210930080952-8ada8f515b9c
 	github.com/rs/zerolog v1.25.0

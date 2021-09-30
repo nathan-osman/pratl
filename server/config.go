@@ -7,5 +7,6 @@ import (
 // Config defines the parameters for creating server instances.
 type Config struct {
 	Addr string
+	Key  string
 	Conn *db.Conn
 }

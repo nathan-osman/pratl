@@ -5,12 +5,15 @@ import (
 	"errors"
 	"net/http"
 
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/go-herald"
 	"github.com/nathan-osman/pratl/db"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
+
+const identityKey = "user"
 
 // Server provides an HTTP interface for connecting clients.
 type Server struct {
@@ -21,7 +24,7 @@ type Server struct {
 }
 
 // New creates a new server instance.
-func New(cfg *Config) *Server {
+func New(cfg *Config) (*Server, error) {
 	var (
 		r = gin.Default()
 		s = &Server{
@@ -35,17 +38,38 @@ func New(cfg *Config) *Server {
 		}
 	)
 
-	// Register the API routes
+	// Setup the JWT middleware
+	m, err := jwt.New(&jwt.GinJWTMiddleware{
+		Realm:           "Pratl",
+		Key:             []byte(cfg.Key),
+		Authenticator:   s.authenticator,
+		Authorizator:    s.authorizator,
+		PayloadFunc:     s.payloadFunc,
+		Unauthorized:    e,
+		IdentityHandler: s.identityHandler,
+		IdentityKey:     identityKey,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	r.POST("/users/login", s.users_login_POST)
-	r.POST("/users/register", s.users_register_POST)
+	// JWT authentication methods
+	r.POST("/auth/login", m.LoginHandler)
+	r.POST("/auth/refresh", m.RefreshHandler)
+	r.POST("/auth/register", s.auth_register_POST)
 
-	r.GET("/rooms", s.rooms_GET)
-	r.POST("/rooms", s.rooms_POST)
-	r.PUT("/rooms/:id", s.rooms_id_PUT)
-	r.DELETE("/rooms/:id", s.rooms_id_DELETE)
+	a := r.Group("/").Use(m.MiddlewareFunc())
 
-	r.POST("/messages", s.messages_POST)
+	// Protected API methods
+
+	a.GET("/rooms", s.rooms_GET)
+	a.POST("/rooms", s.rooms_POST)
+	a.PUT("/rooms/:id", s.rooms_id_PUT)
+	a.DELETE("/rooms/:id", s.rooms_id_DELETE)
+
+	a.POST("/messages", s.messages_POST)
+
+	a.GET("/ws", s.ws)
 
 	// Setup and initialize the herald
 	s.herald.MessageHandler = s.processMessage
@@ -62,7 +86,7 @@ func New(cfg *Config) *Server {
 		}
 	}()
 
-	return s
+	return s, nil
 }
 
 // Close shuts down the server and herald.

@@ -52,6 +52,11 @@ func main() {
 			EnvVar: "SERVER_ADDR",
 			Usage:  "address for server to listen on",
 		},
+		cli.StringFlag{
+			Name:   "server-key",
+			EnvVar: "SERVER_KEY",
+			Usage:  "key used for signing requests",
+		},
 	}
 	app.Action = func(ctx *cli.Context) error {
 
@@ -74,10 +79,14 @@ func main() {
 		}
 
 		// Start the server
-		s := server.New(&server.Config{
+		s, err := server.New(&server.Config{
 			Addr: ctx.String("server-addr"),
+			Key:  ctx.String("server-key"),
 			Conn: d,
 		})
+		if err != nil {
+			return err
+		}
 		defer s.Close()
 
 		// Wait for SIGINT or SIGTERM
