@@ -62,10 +62,7 @@ func New(cfg *Config) (*Server, error) {
 
 	// Protected API methods
 
-	a.GET("/rooms", s.rooms_GET)
 	a.POST("/rooms", s.rooms_POST)
-	a.PUT("/rooms/:id", s.rooms_id_PUT)
-	a.DELETE("/rooms/:id", s.rooms_id_DELETE)
 
 	a.POST("/messages", s.messages_POST)
 
