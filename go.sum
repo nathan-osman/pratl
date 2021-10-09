@@ -115,8 +115,8 @@ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJ
 github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/modern-go/reflect2 v1.0.1 h1:9f412s+6RmYXLWZSEzVVgPGK7C2PphHj5RJrvfx9AWI=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
-github.com/nathan-osman/go-herald v0.0.0-20210930080952-8ada8f515b9c h1:Zx0LcOQ7sdQ9ohvY3/uftBdUT2gYl0WOL0U9THS+BJo=
-github.com/nathan-osman/go-herald v0.0.0-20210930080952-8ada8f515b9c/go.mod h1:kUF1rTnPdC978XNvf/KtCPXTSjWX67BBjwDI7/QgdWk=
+github.com/nathan-osman/go-herald v0.0.0-20211009232519-9f3f434493fd h1:BrXP8l3gJvvSJbCoHJOPvfEZ8/5tBdtHn1vgI1ysYjo=
+github.com/nathan-osman/go-herald v0.0.0-20211009232519-9f3f434493fd/go.mod h1:kUF1rTnPdC978XNvf/KtCPXTSjWX67BBjwDI7/QgdWk=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

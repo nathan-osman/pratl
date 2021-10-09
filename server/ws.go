@@ -12,7 +12,16 @@ const (
 )
 
 func (s *Server) ws(c *gin.Context) {
-	s.herald.AddClient(c.Writer, c.Request, c.MustGet(identityKey).(*db.User).ID)
+	client, err := s.herald.AddClient(
+		c.Writer,
+		c.Request,
+		c.MustGet(identityKey).(*db.User).ID,
+	)
+	if err != nil {
+		s.logger.Error().Msg(err.Error())
+		return
+	}
+	client.Wait()
 }
 
 func (s *Server) processMessage(m *herald.Message, c *herald.Client) {
