@@ -24,7 +24,9 @@ func (s *Server) messages_POST(c *gin.Context) {
 		member = &db.Member{}
 		userID = c.MustGet(contextUser).(*db.User).ID
 	)
-	if err := s.conn.Joins("User").
+	if err := s.conn.
+		Joins("User").
+		Joins("Room").
 		Find(member, "user_id = ? AND room_id = ?", userID, params.RoomID).
 		Error; err != nil {
 		failure(c, http.StatusUnauthorized, err.Error())

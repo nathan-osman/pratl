@@ -4,7 +4,7 @@ package db
 type Member struct {
 	ID      int64 `json:"id"`
 	UserID  int64 `gorm:"not null" json:"-"`
-	User    *User `gorm:"constraint:OnDelete:CASCADE" json:"user"`
+	User    *User `gorm:"constraint:OnDelete:CASCADE" json:"user,omitempty"`
 	RoomID  int64 `gorm:"not null" json:"-"`
 	Room    *Room `gorm:"constraint:OnDelete:CASCADE" json:"room"`
 	IsOwner bool  `gorm:"not null" json:"is_owner"`
