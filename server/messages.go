@@ -17,17 +17,17 @@ type messages_POST_params struct {
 func (s *Server) messages_POST(c *gin.Context) {
 	params := &messages_POST_params{}
 	if err := c.ShouldBindJSON(params); err != nil {
-		e(c, http.StatusBadRequest, err.Error())
+		failure(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	var (
 		member = &db.Member{}
-		userID = c.MustGet(identityKey).(*db.User).ID
+		userID = c.MustGet(contextUser).(*db.User).ID
 	)
 	if err := s.conn.Joins("User").
 		Find(member, "user_id = ? AND room_id = ?", userID, params.RoomID).
 		Error; err != nil {
-		e(c, http.StatusUnauthorized, err.Error())
+		failure(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 	message := &db.Message{
@@ -37,12 +37,12 @@ func (s *Server) messages_POST(c *gin.Context) {
 		CreationDate: time.Now(),
 	}
 	if err := s.conn.Save(message).Error; err != nil {
-		e(c, http.StatusInternalServerError, err.Error())
+		failure(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	members := []*db.Member{}
 	if err := s.conn.Find(&members, "room_id = ?", member.RoomID).Error; err != nil {
-		e(c, http.StatusInternalServerError, err.Error())
+		failure(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	clients := []*herald.Client{}
@@ -55,7 +55,7 @@ func (s *Server) messages_POST(c *gin.Context) {
 	}
 	m, err := herald.NewMessage(messageMessage, message)
 	if err != nil {
-		e(c, http.StatusInternalServerError, err.Error())
+		failure(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	s.herald.Send(m, clients)

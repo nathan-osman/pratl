@@ -5,7 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/go-herald"
 	"github.com/nathan-osman/pratl/db"
@@ -13,7 +14,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const identityKey = "user"
+const sessionName = "pratl"
 
 // Server provides an HTTP interface for connecting clients.
 type Server struct {
@@ -36,31 +37,17 @@ func New(cfg *Config) (*Server, error) {
 			herald: herald.New(),
 			logger: log.With().Str("package", "server").Logger(),
 		}
+		store = cookie.NewStore([]byte(cfg.Key))
 	)
 
-	// Setup the JWT middleware
-	m, err := jwt.New(&jwt.GinJWTMiddleware{
-		Realm:           "Pratl",
-		Key:             []byte(cfg.Key),
-		Authenticator:   s.authenticator,
-		Authorizator:    s.authorizator,
-		PayloadFunc:     s.payloadFunc,
-		Unauthorized:    e,
-		IdentityHandler: s.identityHandler,
-		IdentityKey:     identityKey,
-	})
-	if err != nil {
-		return nil, err
-	}
+	r.Use(sessions.Sessions(sessionName, store))
 
-	// JWT authentication methods
-	r.POST("/auth/login", m.LoginHandler)
-	r.POST("/auth/refresh", m.RefreshHandler)
+	// Unauthenticated methods
+	r.POST("/auth/login", s.auth_login_POST)
 	r.POST("/auth/register", s.auth_register_POST)
 
-	a := r.Group("/").Use(m.MiddlewareFunc())
-
-	// Protected API methods
+	// Authenticated methods
+	a := r.Group("/").Use(s.requireLogin)
 
 	a.POST("/rooms", s.rooms_POST)
 

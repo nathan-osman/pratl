@@ -3,56 +3,43 @@ package server
 import (
 	"net/http"
 
-	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/pratl/db"
 )
 
-type authenticatorParams struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+const (
+	sessionUserID = "user_id"
+	contextUser   = "user"
+)
+
+type auth_login_POST_params struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
-// authenticator creates a JWT from the provided login credentials.
-func (s *Server) authenticator(c *gin.Context) (interface{}, error) {
-	params := &authenticatorParams{}
+func (s *Server) auth_login_POST(c *gin.Context) {
+	params := &auth_login_POST_params{}
 	if err := c.ShouldBindJSON(params); err != nil {
-		return nil, err
+		failure(c, http.StatusBadRequest, err.Error())
+		return
 	}
-	u := &db.User{}
-	if err := s.conn.First(u, "username = ?", params.Username).Error; err != nil {
-		return nil, jwt.ErrFailedAuthentication
+	user := &db.User{}
+	if err := s.conn.First(user, "username = ?", params.Username).Error; err != nil {
+		failure(c, http.StatusUnauthorized, err.Error())
+		return
 	}
-	if err := u.Authenticate(params.Password); err != nil {
-		return nil, jwt.ErrFailedAuthentication
+	if err := user.Authenticate(params.Password); err != nil {
+		failure(c, http.StatusUnauthorized, err.Error())
+		return
 	}
-	return u.ID, nil
-}
-
-// authorizator examines the output of identityHandler.
-func (s *Server) authorizator(data interface{}, c *gin.Context) bool {
-	return data != nil
-}
-
-// payloadFunc adds the identity (user ID) to the token
-func (s *Server) payloadFunc(data interface{}) jwt.MapClaims {
-	if v, ok := data.(int64); ok {
-		return jwt.MapClaims{
-			identityKey: v,
-		}
+	session := sessions.Default(c)
+	session.Set(sessionUserID, user.ID)
+	if err := session.Save(); err != nil {
+		failure(c, http.StatusInternalServerError, err.Error())
+		return
 	}
-	return jwt.MapClaims{}
-}
-
-// identityHandler loads the User from the database.
-func (s *Server) identityHandler(c *gin.Context) interface{} {
-	u := &db.User{}
-	if err := s.conn.
-		First(u, "id = ? AND is_active = ?", jwt.ExtractClaims(c)[identityKey], true).
-		Error; err != nil {
-		return nil
-	}
-	return u
+	success(c)
 }
 
 type auth_register_POST_params struct {
@@ -64,7 +51,7 @@ type auth_register_POST_params struct {
 func (s *Server) auth_register_POST(c *gin.Context) {
 	params := &auth_register_POST_params{}
 	if err := c.ShouldBindJSON(params); err != nil {
-		e(c, http.StatusBadRequest, err.Error())
+		failure(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	user := &db.User{
@@ -73,12 +60,26 @@ func (s *Server) auth_register_POST(c *gin.Context) {
 		IsActive: true,
 	}
 	if err := user.SetPassword(params.Password); err != nil {
-		e(c, http.StatusInternalServerError, err.Error())
+		failure(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if err := s.conn.Save(user).Error; err != nil {
-		e(c, http.StatusInternalServerError, err.Error())
+		failure(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	success(c)
+}
+
+func (s *Server) requireLogin(c *gin.Context) {
+	session := sessions.Default(c)
+	var (
+		v    = session.Get(sessionUserID)
+		user = &db.User{}
+	)
+	if err := s.conn.First(user, v).Error; err != nil {
+		failure(c, http.StatusUnauthorized, err.Error())
+		c.Abort()
+		return
+	}
+	c.Set(contextUser, user)
 }
