@@ -10,7 +10,7 @@ import (
 type User struct {
 	ID       int64  `json:"id"`
 	Username string `gorm:"not null;uniqueIndex" json:"username"`
-	Password string `gorm:"not null" json:"password"`
+	Password string `gorm:"not null" json:"-"`
 	Email    string `gorm:"not null" json:"email"`
 	IsActive bool   `gorm:"not null" json:"is_active"`
 }

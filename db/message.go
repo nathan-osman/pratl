@@ -12,6 +12,6 @@ type Message struct {
 	Body         string    `gorm:"not null" json:"body"`
 	CreationDate time.Time `gorm:"not null" json:"creation_date"`
 	StarCount    int64     `gorm:"not null" json:"star_count"`
-	Stars        []*User   `gorm:"many2many:message_stars;" json:"stars"`
+	Stars        []*User   `gorm:"many2many:message_stars;" json:"-"`
 	IsEdited     bool      `gorm:"not null" json:"is_edited"`
 }
