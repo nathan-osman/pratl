@@ -1,4 +1,8 @@
+@import 'scss/variables';
+
 #App {
+  background-color: $colBackground;
+  color: $colText;
   display: grid;
   height: 100%;
 

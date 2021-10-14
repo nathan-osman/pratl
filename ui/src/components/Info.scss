@@ -1,4 +1,6 @@
+@import '../scss/variables';
+
 #info {
-  background-color: blue;
+  background-color: $colBackgroundLight;
   grid-area: info;
 }
