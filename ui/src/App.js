@@ -1,21 +1,16 @@
 import './App.scss';
+import Composer from './components/Composer';
+import Info from './components/Info';
+import Messages from './components/Messages';
+import Rooms from './components/Rooms';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Rooms />
+      <Messages />
+      <Composer />
+      <Info />
     </div>
   );
 }
