@@ -6,7 +6,7 @@ import Rooms from './components/Rooms';
 
 function App() {
   return (
-    <div className="App">
+    <div id="App">
       <Rooms />
       <Messages />
       <Composer />
