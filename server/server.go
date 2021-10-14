@@ -4,12 +4,15 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/go-herald"
 	"github.com/nathan-osman/pratl/db"
+	"github.com/nathan-osman/pratl/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -22,6 +25,15 @@ type Server struct {
 	conn   *db.Conn
 	herald *herald.Herald
 	logger zerolog.Logger
+}
+
+type embedFileSystem struct {
+	http.FileSystem
+}
+
+func (e embedFileSystem) Exists(prefix, path string) bool {
+	_, err := e.Open(path)
+	return !os.IsNotExist(err)
 }
 
 // New creates a new server instance.
@@ -40,7 +52,10 @@ func New(cfg *Config) (*Server, error) {
 		store = cookie.NewStore([]byte(cfg.Key))
 	)
 
-	r.Use(sessions.Sessions(sessionName, store))
+	r.Use(
+		sessions.Sessions(sessionName, store),
+		static.Serve("/", embedFileSystem{FileSystem: http.FS(ui.Content)}),
+	)
 
 	// Unauthenticated methods
 	r.POST("/auth/login", s.auth_login_POST)
@@ -50,7 +65,6 @@ func New(cfg *Config) (*Server, error) {
 	a := r.Group("/").Use(s.requireLogin)
 
 	a.POST("/rooms", s.rooms_POST)
-
 	a.POST("/messages", s.messages_POST)
 
 	a.GET("/ws", s.ws)
