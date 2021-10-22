@@ -1,5 +1,29 @@
 @import '../scss/variables';
 
 #messages {
-  grid-area: messages;
+
+  .message {
+    align-items: flex-start;
+    display: flex;
+    margin: $spPanel;
+
+    &.left {
+      .avatar { margin-right: $spElem; }
+    }
+
+    &.right {
+      flex-direction: row-reverse;
+
+      .avatar { margin-left: $spElem; }
+    }
+
+    .avatar {
+      width: 48px;
+    }
+
+    .content {
+      background-color: $colBackgroundLight;
+      padding: $spElem;
+    }
+  }
 }
