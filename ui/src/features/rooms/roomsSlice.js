@@ -4,15 +4,15 @@ const initialState = {
   all: [
     {
       name: "The First Room",
-      creationDate: "45 minutes"
+      creationDate: "2021-10-22T18:25:43-05:00"
     },
     {
       name: "Room for Bob and Jessica",
-      creationDate: "1 day"
+      creationDate: "2021-10-21T18:25:43-05:00"
     },
     {
       name: "Test Room",
-      creationDate: "2 weeks"
+      creationDate: "2021-10-11T18:25:43-05:00"
     }
   ],
   activeIndex: -1

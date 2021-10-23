@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactTimeAgo from 'react-time-ago';
 import { setActive } from './roomsSlice';
 import './Rooms.scss';
 
@@ -16,7 +17,7 @@ const Rooms = () => {
           onClick={() => dispatch(setActive(i))}
         >
           <div className="name">{r.name}</div>
-          <div className="time">{r.creationDate}</div>
+          <div className="time"><ReactTimeAgo date={r.creationDate} /></div>
         </div>
       )}
     </div>
