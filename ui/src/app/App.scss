@@ -3,12 +3,16 @@
 #App {
   background-color: $colBackground;
   color: $colText;
-  display: grid;
   height: 100%;
 
-  grid-template-columns: minmax(200px, 300px) 1fr minmax(200px, 300px);
-  grid-template-rows: 1fr auto;
-  grid-template-areas:
-    "rooms messages info"
-    "rooms composer info";
+  .page {
+    display: grid;
+    height: 100%;
+
+    grid-template-columns: minmax(200px, 300px) 1fr minmax(200px, 300px);
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "rooms messages info"
+      "rooms composer info";
+  }
 }
