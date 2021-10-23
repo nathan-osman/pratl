@@ -20,7 +20,7 @@ const initialState = {
 
 const roomsSlice = createSlice({
   name: 'rooms',
-  initialState: initialState,
+  initialState,
   reducers: {
     setRooms(state, action) {
       state.all = action.payload;
