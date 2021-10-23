@@ -9,26 +9,5 @@
     grid-auto-flow: column;
     grid-template-columns: 1fr;
     column-gap: $spElem;
-
-    .elem {
-      background-color: $colBackground;
-      border: 2px solid $colBackgroundLight;
-      color: $colText;
-      font-size: 18px;
-      padding: $spElem;
-
-      &:focus {
-        border-color: $colBackgroundLighter;
-        outline: none;
-      }
-    }
-
-    .input {
-      flex-grow: 1;
-    }
-
-    .btn {
-      cursor: pointer;
-    }
   }
 }

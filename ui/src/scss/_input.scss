@@ -1,0 +1,24 @@
+@import 'variables';
+
+button,
+input[type=text],
+input[type=password] {
+  background-color: $colBackground;
+  border: 2px solid $colBackgroundLight;
+  color: $colText;
+  font-size: $sizeElem;
+  padding: $spElem;
+
+  &:focus {
+    border-color: $colBackgroundLighter;
+    outline: none;
+  }
+}
+
+button {
+  cursor: pointer;
+
+  &:hover {
+    background-color: $colBackgroundLight;
+  }
+}

@@ -15,7 +15,7 @@ const initialState = {
       creationDate: "2021-10-11T18:25:43-05:00"
     }
   ],
-  activeIndex: -1
+  activeIndex: 0
 };
 
 const roomsSlice = createSlice({

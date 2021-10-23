@@ -5,13 +5,10 @@ const Composer = () => {
     <div className="controls">
       <input
         type="text"
-        className="elem input"
-        autocomplete="off"
+        autoFocus
+        autoComplete="off"
       />
-      <button
-        type="button"
-        className="elem btn"
-      >Send</button>
+      <button type="button">Send</button>
     </div>
   </div>;
 };

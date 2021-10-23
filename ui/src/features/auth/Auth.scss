@@ -1,7 +1,29 @@
+@import '../../scss/variables';
+
 #auth {
-  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  background: radial-gradient($colBackgroundLighter, $colBackground);
+  display: flex;
   height: 100%;
+  justify-content: center;
   position: absolute;
   top: 0;
   width: 100%;
+
+  .panel {
+    background-color: $colBackground;
+    box-shadow: 0 0 32px $colBackground;
+    display: grid;
+    row-gap: $spPanel;
+    padding: $spPanel;
+
+    .title {
+      font-size: $sizeMenuTitle;
+    }
+
+    .content {
+      display: grid;
+      row-gap: $spElem;
+    }
+  }
 }
