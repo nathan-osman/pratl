@@ -1,16 +1,24 @@
+import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive } from './roomsSlice';
 import './Rooms.scss';
 
 const Rooms = () => {
+
+  const rooms = useSelector(state => state.rooms);
+  const dispatch = useDispatch();
+
   return <div id="rooms">
     <div className="room-list">
-      <div className="room">
-        <div className="name">The First Room</div>
-        <div className="time">5 minutes ago</div>
-      </div>
-      <div className="room active">
-        <div className="name">Room for Bob and Jessica</div>
-        <div className="time">1 day ago</div>
-      </div>
+      {rooms.all.map((r, i) =>
+        <div
+          className={classNames('room', { active: rooms.activeIndex === i })}
+          onClick={() => dispatch(setActive(i))}
+        >
+          <div className="name">{r.name}</div>
+          <div className="time">{r.creationDate}</div>
+        </div>
+      )}
     </div>
   </div>;
 };
