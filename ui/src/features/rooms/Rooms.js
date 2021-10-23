@@ -13,11 +13,13 @@ const Rooms = () => {
     <div className="room-list">
       {rooms.all.map((r, i) =>
         <div
-          className={classNames('room', { active: rooms.activeIndex === i })}
+          className={classNames('item', { active: rooms.activeIndex === i })}
           onClick={() => dispatch(setActive(i))}
         >
-          <div className="name">{r.name}</div>
-          <div className="time"><ReactTimeAgo date={r.creationDate} /></div>
+          <div className="content">
+            <div className="title">{r.name}</div>
+            <div className="subtitle"><ReactTimeAgo date={r.creationDate} /></div>
+          </div>
         </div>
       )}
     </div>

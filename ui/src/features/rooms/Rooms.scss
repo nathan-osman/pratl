@@ -3,31 +3,4 @@
 #rooms {
   background-color: $colBackgroundLight;
   grid-area: rooms;
-
-  .room-list {
-    .room {
-      padding: $spPanel;
-
-      &:hover {
-        background-color: $colBackgroundLighter;
-        cursor: pointer;
-      }
-
-      &.active {
-        background-color: $colBackground;
-      }
-
-      .name {
-        font-size: 24px;
-        font-weight: $fontBold;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .time {
-        font-size: 16px;
-      }
-    }
-  }
 }

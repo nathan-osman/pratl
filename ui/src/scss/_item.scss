@@ -1,0 +1,36 @@
+@import 'variables';
+
+.item {
+  display: flex;
+  padding: $spPanel;
+
+  &:hover {
+    background-color: $colBackgroundLighter;
+    cursor: pointer;
+  }
+
+  &.active {
+    background-color: $colBackground;
+  }
+
+  .icon {
+    margin-right: $spElem;
+  }
+
+  .content {
+    flex-grow: 1;
+    min-width: 0;  // ensure ellipsis works
+
+    .title {
+      font-size: $sizeMenuTitle;
+      font-weight: $fontBold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      font-size: $sizeMenuSub;
+    }
+  }
+}

@@ -2,5 +2,11 @@
 
 #info {
   background-color: $colBackgroundLight;
+  display: flex;
+  flex-direction: column;
   grid-area: info;
+
+  .content {
+    flex-grow: 1;
+  }
 }
