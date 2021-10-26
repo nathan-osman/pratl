@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
+import { logout } from '../auth/authSlice';
 import SettingsIcon from './settings.svg';
 import LogoutIcon from './logout.svg';
-import { logout } from '../auth/authSlice';
 import './Info.scss';
 
 const Info = () => {

@@ -1,22 +1,54 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { loginUser } from "./authAPI";
+
+export const login = createAsyncThunk(
+  'auth/login',
+  async (arg, thunkAPI) => {
+    const response = await loginUser(arg.username, arg.password);
+
+    // Handle error
+
+    return response.data;
+  }
+);
 
 const initialState = {
-  isAuthenticated: false
+  isAuthenticating: false,
+  isAuthenticated: false,
+  username: '',
+  password: ''
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state, action) {
-      state.isAuthenticated = true;
-    },
     logout(state, action) {
       state.isAuthenticated = false;
+      // TODO: invalidate local credentials
+    },
+    setUsername(state, action) {
+      state.username = action.payload;
+    },
+    setPassword(state, action) {
+      state.password = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(login.pending, (state, action) => {
+      state.isAuthenticating = true;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      //state.isAuthenticating = false;
+      //state.isAuthenticated = true;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.isAuthenticating = false;
+      // TODO: error message
+    });
   }
 });
 
-export const { login, logout } = authSlice.actions;
+export const { logout, setUsername, setPassword } = authSlice.actions;
 
 export default authSlice.reducer;

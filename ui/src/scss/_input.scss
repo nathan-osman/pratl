@@ -13,12 +13,24 @@ input[type=password] {
     border-color: $colBackgroundLighter;
     outline: none;
   }
+
+  &:disabled {
+    background-color: $colBackgroundLight;
+    color: $colBackground;
+  }
 }
 
 button {
+  align-items: center;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 
   &:hover {
     background-color: $colBackgroundLight;
+  }
+
+  .icon {
+    margin-right: $spElem;
   }
 }
