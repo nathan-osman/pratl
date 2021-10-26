@@ -37,7 +37,7 @@ func main() {
 		cli.StringFlag{
 			Name:   "db-user",
 			Value:  "postgres",
-			EnvVar: "DB_NAME",
+			EnvVar: "DB_USER",
 			Usage:  "PostgreSQL database user",
 		},
 		cli.StringFlag{
