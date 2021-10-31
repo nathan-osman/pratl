@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost/'
+  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost' : ''
 });
 
 export const post = async function (url, data) {
