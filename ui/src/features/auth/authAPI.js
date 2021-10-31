@@ -1,9 +1,5 @@
+import { post } from "../../common/axios";
+
 export async function loginUser(username, password) {
-  return await fetch('/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, password })
-  });
+  return await post('/auth/login', { username, password });
 };

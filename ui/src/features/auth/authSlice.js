@@ -3,12 +3,8 @@ import { loginUser } from "./authAPI";
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (arg, thunkAPI) => {
-    const response = await loginUser(arg.username, arg.password);
-
-    // Handle error
-
-    return response.data;
+  async (arg) => {
+    return await loginUser(arg.username, arg.password);
   }
 );
 
