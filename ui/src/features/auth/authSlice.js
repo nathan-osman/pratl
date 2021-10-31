@@ -11,6 +11,7 @@ export const login = createAsyncThunk(
 const initialState = {
   isAuthenticating: false,
   isAuthenticated: false,
+  errorMessage: null,
   username: '',
   password: ''
 };
@@ -19,7 +20,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout(state, action) {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
       state.isAuthenticated = false;
       // TODO: invalidate local credentials
     },
@@ -35,12 +39,13 @@ const authSlice = createSlice({
       state.isAuthenticating = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      //state.isAuthenticating = false;
-      //state.isAuthenticated = true;
+      state.isAuthenticating = false;
+      state.isAuthenticated = true;
+      state.errorMessage = null;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.isAuthenticating = false;
-      // TODO: error message
+      state.errorMessage = action.error.message;
     });
   }
 });

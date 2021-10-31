@@ -7,40 +7,46 @@ const Auth = () => {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  // TODO: use submit button to enable "return" for login
+  function handleSubmit(e) {
+    e.preventDefault();
+    dispatch(
+      login({ username: auth.username, password: auth.password })
+    );
+  }
 
   return <div id="auth">
-    <div className="panel">
+    <form
+      className="panel"
+      onSubmit={handleSubmit}
+    >
       <div className="title">Pratl</div>
+      {auth.errorMessage ?
+        <div className="error">Error: {auth.errorMessage}</div> : null
+      }
       <div className="content">
-        <div>
-          <input
-            type="text"
-            placeholder="username"
-            value={auth.username}
-            onChange={(e) => dispatch(setUsername(e.target.value))}
-            disabled={auth.isAuthenticating}
-            autoFocus
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="password"
-            value={auth.password}
-            onChange={(e) => dispatch(setPassword(e.target.value))}
-            disabled={auth.isAuthenticating}
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="username"
+          value={auth.username}
+          onChange={(e) => dispatch(setUsername(e.target.value))}
+          disabled={auth.isAuthenticating}
+          autoFocus
+        />
+        <input
+          type="password"
+          placeholder="password"
+          value={auth.password}
+          onChange={(e) => dispatch(setPassword(e.target.value))}
+          disabled={auth.isAuthenticating}
+        />
       </div>
       <button
-        type="button"
-        onClick={() => dispatch(login({ username: auth.username, password: auth.password }))}
+        type="submit"
         disabled={auth.isAuthenticating}
       >
         {auth.isAuthenticating ? "Please wait..." : "Login"}
       </button>
-    </div>
+    </form>
   </div>;
 };
 
