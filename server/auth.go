@@ -13,6 +13,10 @@ const (
 	contextUser   = "user"
 )
 
+var (
+	errInvalidUsernameOrPassword = "invalid username or password"
+)
+
 type auth_login_POST_params struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -26,11 +30,11 @@ func (s *Server) auth_login_POST(c *gin.Context) {
 	}
 	user := &db.User{}
 	if err := s.conn.First(user, "username = ?", params.Username).Error; err != nil {
-		failure(c, http.StatusUnauthorized, err.Error())
+		failure(c, http.StatusUnauthorized, errInvalidUsernameOrPassword)
 		return
 	}
 	if err := user.Authenticate(params.Password); err != nil {
-		failure(c, http.StatusUnauthorized, err.Error())
+		failure(c, http.StatusUnauthorized, errInvalidUsernameOrPassword)
 		return
 	}
 	session := sessions.Default(c)
