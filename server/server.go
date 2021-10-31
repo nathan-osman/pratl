@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/static"
@@ -56,6 +57,14 @@ func New(cfg *Config) (*Server, error) {
 		sessions.Sessions(sessionName, store),
 		static.Serve("/", embedFileSystem{FileSystem: http.FS(ui.Content)}),
 	)
+
+	// If operating in debug mode, add CORS headers
+	if cfg.Debug {
+		r.Use(cors.New(cors.Config{
+			AllowOrigins: []string{"*"},
+			AllowHeaders: []string{"Content-Type"},
+		}))
+	}
 
 	// Unauthenticated methods
 	r.POST("/auth/login", s.auth_login_POST)

@@ -46,6 +46,11 @@ func main() {
 			EnvVar: "DB_PASSWORD",
 			Usage:  "PostgreSQL database password",
 		},
+		cli.BoolFlag{
+			Name:   "debug",
+			EnvVar: "DEBUG",
+			Usage:  "enable debug mode",
+		},
 		cli.StringFlag{
 			Name:   "server-addr",
 			Value:  ":http",
@@ -80,9 +85,10 @@ func main() {
 
 		// Start the server
 		s, err := server.New(&server.Config{
-			Addr: ctx.String("server-addr"),
-			Key:  ctx.String("server-key"),
-			Conn: d,
+			Debug: ctx.Bool("debug"),
+			Addr:  ctx.String("server-addr"),
+			Key:   ctx.String("server-key"),
+			Conn:  d,
 		})
 		if err != nil {
 			return err
